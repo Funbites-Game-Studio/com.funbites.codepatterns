@@ -1,0 +1,21 @@
+{
+  "name": "com.funbites.codepatterns",
+  "version": "0.0.1",
+  "displayName": "Code Patterns",
+  "description": "Common Code Patterns for Unity Projects",
+  "unity": "2019.3",
+  "unityRelease": "3f1",
+  "dependencies": {
+    
+ },
+ "keywords": [
+    "keyword1",
+    "keyword2",
+    "keyword3"
+  ],
+  "author": {
+    "name": "Funbites Game Studio",
+    "email": "funbitesgames@gmail.com",
+    "url": "https://www.funbites.com.br"
+  }
+}
