@@ -2,7 +2,7 @@
 {
     public class ReferenceableBoolEventListener : GenericReferenceableEventListener<bool, UnityUtils.Events.BooleanEvent> {
         [UnityEngine.SerializeField, Sirenix.OdinInspector.Required]
-        private ReferenceableBoolEvent m_referenceableBoolEvent;
+        private ReferenceableBoolEvent m_referenceableBoolEvent = null;
 
         protected override GenericReferenceableEvent<bool, UnityUtils.Events.BooleanEvent> Event
         {

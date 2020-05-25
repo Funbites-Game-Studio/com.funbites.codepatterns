@@ -1,14 +1,10 @@
-﻿using Funbites.Patterns;
-using Sirenix.OdinInspector;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEngine;
+﻿namespace Funbites.Debugging
+{
+    using System.Diagnostics;
 
-namespace Funbites.Utils.Debugging {
-    public class DevDebug : SingletonScriptableObject<DevDebug> {
-        [SerializeField, ReadOnly]
-        private List<string> activeGroups;
+    public class DevDebug : Patterns.SingletonScriptableObject<DevDebug> {
+        [UnityEngine.SerializeField, Sirenix.OdinInspector.ReadOnly]
+        private System.Collections.Generic.List<string> activeGroups;
 
         private void AddGroup(string group) {
             if (!IsGroupActive(group))
@@ -20,25 +16,25 @@ namespace Funbites.Utils.Debugging {
                 activeGroups.Remove(group);
         }
 
-        public static void Add(Type group) {
+        public static void Add(System.Type group) {
             Instance.AddGroup(group.Name);
         }
 
-        public static void Remove(Type group) {
+        public static void Remove(System.Type group) {
             Instance.RemoveGroup(group.Name);
         }
 
         private bool IsGroupActive(string group) {
-            if (activeGroups == null) activeGroups = new List<string>();
+            if (activeGroups == null) activeGroups = new System.Collections.Generic.List<string>();
             return activeGroups.Contains(group);
         }
 
-        public static bool IsActive(Type group) {
+        public static bool IsActive(System.Type group) {
             return Instance.IsGroupActive(group.Name);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log(string message, Type caller, UnityEngine.Object context = null) {
+        public static void Log(string message, System.Type caller, UnityEngine.Object context = null) {
             if (IsActive(caller))
                 UnityEngine.Debug.Log(message, context);
         }
@@ -46,13 +42,13 @@ namespace Funbites.Utils.Debugging {
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log(string message, UnityEngine.Object context) {
             if (IsActive(context.GetType()))
-                UnityEngine.Debug.Log(message, (context is MonoBehaviour) ? (context as MonoBehaviour).gameObject: context);
+                UnityEngine.Debug.Log(message, (context is UnityEngine.MonoBehaviour) ? 
+                    (context as UnityEngine.MonoBehaviour).gameObject: context);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
-        public static void Log(Func<string> message, UnityEngine.Object context) {
-            if (IsActive(context.GetType()))
-                UnityEngine.Debug.Log(message.Invoke(), (context is MonoBehaviour) ? (context as MonoBehaviour).gameObject : context);
+        public static void Log(System.Func<string> message, UnityEngine.Object context) {
+            Log(message.Invoke(), context);            
         }
     }
 }

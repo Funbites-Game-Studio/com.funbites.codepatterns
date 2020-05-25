@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-namespace Funbites.Patterns.ScriptableVariables
+﻿namespace Funbites.Patterns.ScriptableVariables
 {
-    [CreateAssetMenu(menuName = "Common Referencables/Float")]
+    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Scriptable Variables/Float")]
     public class FloatVariable : BaseFloatVariable {
     }
 }

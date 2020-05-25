@@ -2,7 +2,7 @@
 
 namespace Funbites.Patterns.ScriptableVariables
 {
-    [CreateAssetMenu(menuName = "Common Referencables/Variables/String")]
+    [CreateAssetMenu(menuName = "Funbites/Scriptable Variables/String")]
     public class StringVariable : BaseVariable<string>
     {
       

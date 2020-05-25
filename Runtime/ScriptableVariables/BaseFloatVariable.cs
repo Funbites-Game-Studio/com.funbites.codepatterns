@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Funbites.Patterns.ScriptableVariables
+﻿namespace Funbites.Patterns.ScriptableVariables
 {
-    public abstract class BaseFloatVariable : ScriptableObject
+    public abstract class BaseFloatVariable : UnityEngine.ScriptableObject
     {
         public float BaseValue;
 

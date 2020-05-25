@@ -1,11 +1,11 @@
 ﻿namespace Funbites.Patterns.ReferenceableEvents
 {
-    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Referenceable/Event")]
+    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Referenceable Events/Event - No argument")]
     public class ReferenceableEvent : UnityEngine.ScriptableObject
     {
 #if UNITY_EDITOR
         [Sirenix.OdinInspector.ShowInInspector]
-        private bool _debugBreakOnRaise;
+        private bool _debugBreakOnRaise = false;
 #endif
         [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         private readonly System.Collections.Generic.List<IReferenceableEventListener> eventListeners = 

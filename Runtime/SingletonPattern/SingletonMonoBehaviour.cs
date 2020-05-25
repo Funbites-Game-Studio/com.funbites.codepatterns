@@ -1,44 +1,34 @@
 ﻿namespace Funbites.Patterns {
-#if UNITY_EDITOR
-    using UnityEditor;
-#endif
-    using UnityEngine;
-
-
-    // ReSharper disable StaticMemberInGenericType
-    public abstract class SingletonScriptableObject<TComponent> : ScriptableObject
-        where TComponent : ScriptableObject {
-
+    public abstract class SingletonMonoBehavior<TComponent> : UnityEngine.MonoBehaviour
+        where TComponent : UnityEngine.MonoBehaviour
+    {
         static TComponent instance;
         static bool hasInstance;
         static int instanceId;
+        static bool shuttingDown = false;
         static readonly object lockObject = new object();
+
 
         public static TComponent Instance
         {
             get
             {
                 lock (lockObject) {
+                    if (shuttingDown) {
+                        Debugging.Logger.LogWarning("[Singleton] Instance '" + typeof(TComponent) +
+                            "' already destroyed. Returning null.");
+                        return null;
+                    }
                     if (hasInstance) {
                         return instance;
                     }
 
                     if (instance == null) {
-                        string typeName = typeof(TComponent).Name;
-                        instance = Resources.Load(typeName) as TComponent;
-                        if (instance == null) {
-                            
-                            Debug.Log($"{typeName}: cannot find integration settings, creating default settings");
-                            instance = ScriptableObject.CreateInstance<TComponent>();
-                            instance.name = $"{typeName} Settings";
-
-#if UNITY_EDITOR
-                            if (!System.IO.Directory.Exists("Assets/Resources")) {
-                                AssetDatabase.CreateFolder("Assets", "Resources");
-                            }
-                            AssetDatabase.CreateAsset(instance, "Assets/Resources/" + typeName + ".asset");
-#endif
-                        }
+                        // Need to create a new GameObject to attach the singleton to.
+                        var singletonObject = new UnityEngine.GameObject();
+                        instance = singletonObject.AddComponent<TComponent>();
+                        // Make instance persistent.
+                        DontDestroyOnLoad(singletonObject);
                     }
 
                     hasInstance = true;
@@ -59,6 +49,10 @@
             {
                 if (GetInstanceID() == Instance.GetInstanceID()) {
                     return false;
+                }
+
+                if (UnityEngine.Application.isPlaying) {
+                    enabled = false;
                 }
 
                 return true;
@@ -95,6 +89,35 @@
                     // in random order and this may get called during teardown when the instance is
                     // already gone.
                     return GetInstanceID() != instanceId;
+                }
+            }
+        }
+
+
+        // ReSharper disable once VirtualMemberNeverOverridden.Global
+        protected virtual void Start() {
+            gameObject.name = typeof(TComponent).ToString() + " (Singleton)";
+            if (UnityEngine.Application.isPlaying) {
+                if (GetInstanceID() != instanceId) {
+#if UNITY_EDITOR
+                    Debugging.Logger.LogWarning("A redundant instance (" + name + ") of singleton " + typeof(TComponent) + " is present in the scene.", this);
+                    UnityEditor.EditorGUIUtility.PingObject(this);
+#endif
+                    Destroy(gameObject);
+                }
+            }
+            
+        }
+
+        private void OnApplicationQuit() {
+            shuttingDown = true;
+        }
+
+        protected virtual void OnDestroy() {
+            shuttingDown = true;
+            lock (lockObject) {
+                if (GetInstanceID() == instanceId) {
+                    hasInstance = false;
                 }
             }
         }

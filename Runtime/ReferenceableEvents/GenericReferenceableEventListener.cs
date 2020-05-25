@@ -10,7 +10,7 @@
         private bool m_raiseForSpecificArgument = false;
 
         [UnityEngine.SerializeField, Sirenix.OdinInspector.ShowIf("m_raiseForSpecificArgument")]
-        private ARGUMENT_TYPE m_specificArgument;
+        private ARGUMENT_TYPE m_specificArgument = default;
 
         public ARGUMENT_EVENT Response;
 

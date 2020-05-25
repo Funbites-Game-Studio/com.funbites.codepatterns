@@ -6,7 +6,7 @@
         private ReferenceableEvent m_event = null;
 
         [UnityEngine.SerializeField]
-        private UnityEngine.Events.UnityEvent m_response;
+        private UnityEngine.Events.UnityEvent m_response = null;
 
         private void OnEnable() {
             m_event.RegisterListener(this);

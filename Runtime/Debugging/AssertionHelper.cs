@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
-
-namespace Funbites.Utils.Debugging
+﻿namespace Funbites.Debugging
 {
+    using System.Diagnostics;
+    using Debug = UnityEngine.Debug;
+    using Object = UnityEngine.Object;
     public static class AssertionHelper
     {
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
@@ -50,12 +48,12 @@ namespace Funbites.Utils.Debugging
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void AssertEquals(float a, float b, string message, Object context)
         {
-            Assert(Mathf.Abs(a - b) <= Mathf.Epsilon, message, context);
+            Assert(UnityEngine.Mathf.Abs(a - b) <= UnityEngine.Mathf.Epsilon, message, context);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void AssertEquals(float a, float b, System.Func<string> message, Object context) {
-            Assert(Mathf.Abs(a - b) <= Mathf.Epsilon, message, context);
+            Assert(UnityEngine.Mathf.Abs(a - b) <= UnityEngine.Mathf.Epsilon, message, context);
         }
     }
 }

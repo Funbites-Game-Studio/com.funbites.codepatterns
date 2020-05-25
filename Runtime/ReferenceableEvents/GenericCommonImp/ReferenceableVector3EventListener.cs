@@ -2,7 +2,7 @@
 {
     public class ReferenceableVector3EventListener : GenericReferenceableEventListener<UnityEngine.Vector3, UnityUtils.Events.Vector3Event> {
         [UnityEngine.SerializeField, Sirenix.OdinInspector.Required]
-        private ReferenceableVector3Event m_referenceableVector3Event;
+        private ReferenceableVector3Event m_referenceableVector3Event = null;
 
         protected override GenericReferenceableEvent<UnityEngine.Vector3, UnityUtils.Events.Vector3Event> Event
         {

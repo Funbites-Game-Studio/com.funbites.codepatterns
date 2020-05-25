@@ -4,7 +4,7 @@
         where ARGUMENT_EVENT : UnityEngine.Events.UnityEvent<ARGUMENT_TYPE> {
 #if UNITY_EDITOR
         [Sirenix.OdinInspector.ShowInInspector]
-        private bool _debugBreakOnRaise;
+        private bool _debugBreakOnRaise = false;
 #endif
         [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         private readonly System.Collections.Generic.List<IGenericReferenceableEventListener<ARGUMENT_TYPE>> eventListeners = 

@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Funbites.Patterns.ScriptableVariables
+﻿namespace Funbites.Patterns.ScriptableVariables
 {
-    [CreateAssetMenu(menuName = "Common Referencables/Variables/Integer Variable")]
+    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Scriptable Variables/Integer")]
     public class IntVariable : BaseVariable<int>
     {
         public void Increment(int value) {

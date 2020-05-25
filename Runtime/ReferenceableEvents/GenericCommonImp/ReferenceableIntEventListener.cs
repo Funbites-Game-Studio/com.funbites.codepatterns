@@ -1,11 +1,8 @@
-﻿using Sirenix.OdinInspector;
-using UnityEngine;
-
-namespace Funbites.Patterns.ReferenceableEvents
+﻿namespace Funbites.Patterns.ReferenceableEvents
 {
     public class ReferenceableIntEventListener : GenericReferenceableEventListener<int, UnityUtils.Events.IntEvent> {
-        [SerializeField, Required]
-        private ReferenceableIntEvent m_referenceableIntEvent;
+        [UnityEngine.SerializeField, Sirenix.OdinInspector.Required]
+        private ReferenceableIntEvent m_referenceableIntEvent = null;
 
         protected override GenericReferenceableEvent<int, UnityUtils.Events.IntEvent> Event
         {
