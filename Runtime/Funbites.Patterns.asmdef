@@ -1,0 +1,15 @@
+{
+    "name": "Funbites.Patterns",
+    "references": [
+        "GUID:c9d13eba02314b449913950f7f5e8fe8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
