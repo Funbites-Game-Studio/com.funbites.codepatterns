@@ -1,1 +1,1 @@
-# -com.funbites.codepatterns
+# Code Patterns
