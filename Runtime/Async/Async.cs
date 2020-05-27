@@ -1,16 +1,19 @@
-﻿//using MEC;
-//using System.Collections.Generic;
+﻿using System;
 
-//namespace Funbites.Utils.Asynchronous {
-//    public static class Async {
-//        public const float WaitForOneFrame = Timing.WaitForOneFrame;
-//        public static void Run(IEnumerator<float> coroutine) {
-//            Timing.RunCoroutine(coroutine);
-//        }
+namespace Funbites.Patterns.Asynchronous
+{
+    public static class Async
+    {
+        [Obsolete]
+        public static void Run(System.Collections.Generic.IEnumerator<float> coroutine)
+        {
+            MEC.Timing.RunCoroutine(coroutine);
+        }
+        [Obsolete]
+        public static float RunAndWait(System.Collections.Generic.IEnumerator<float> coroutine)
+        {
+            return MEC.Timing.WaitUntilDone(MEC.Timing.RunCoroutine(coroutine));
+        }
 
-//        public static float RunAndWait(IEnumerator<float> coroutine) {
-//            return Timing.WaitUntilDone(Timing.RunCoroutine(coroutine));
-//        }
-        
-//    }
-//}
+    }
+}

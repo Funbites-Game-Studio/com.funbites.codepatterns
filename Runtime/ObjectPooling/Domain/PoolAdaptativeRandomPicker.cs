@@ -1,6 +1,6 @@
 ﻿namespace Funbites.Patterns.ObjectPooling {
     [UnityEngine.CreateAssetMenu(menuName = "Funbites/Object Pooling/Adaptative Random Pool Picker")]
-    public class PoolAdaptativeRandomPicker : Probability.AdaptativeRandomPicker<Pool, WeightedPoolElement> {
+    public class PoolAdaptativeRandomPicker : UnityUtils.Probability.AdaptativeRandomPicker<Pool, WeightedPoolElement> {
         [UnityEngine.SerializeField]
         private System.Collections.Generic.List<WeightedPoolElement> m_pools = null;
 

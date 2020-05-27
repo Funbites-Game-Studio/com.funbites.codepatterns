@@ -1,6 +1,6 @@
 ﻿namespace Funbites.Patterns.ObjectPooling {
     [System.Serializable]
-    public class WeightedPoolElement : Funbites.Probability.ProbabilityElement<Pool> {
+    public class WeightedPoolElement : UnityUtils.Probability.ProbabilityElement<Pool> {
         [UnityEngine.SerializeField]
         private Pool m_pool = null;
 
