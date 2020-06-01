@@ -1,10 +1,10 @@
 ﻿namespace Funbites.Patterns.DDC {
-    public abstract class SingletonBaseDescription<T> : SingletonScriptableObject<SingletonBaseDescription<T>>, IDescription
+    public abstract class SingletonBaseDescription<T> : UnityEngine.ScriptableObject, IDescription
     {
         [System.NonSerialized]
-        private bool isInitialized;
+        private bool isInitialized = false;
         [System.NonSerialized]
-        private T data;
+        private T data = default;
 
         protected abstract T MakeInstance();
 
