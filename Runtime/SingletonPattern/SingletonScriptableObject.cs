@@ -5,6 +5,7 @@
         public static void CreateAsset(string typeName, UnityEngine.ScriptableObject instance)
         {
 #if UNITY_EDITOR
+            instance.name = $"{typeName} Settings";
             if (!System.IO.Directory.Exists("Assets/Resources"))
             {
                 UnityEditor.AssetDatabase.CreateFolder("Assets", "Resources");
@@ -39,11 +40,10 @@
                     if (instance == null) {
                         string typeName = typeof(TComponent).Name;
                         instance = UnityEngine.Resources.Load(typeName) as TComponent;
-                        if (instance != null) {
+                        if (instance == null) {
                             
                             Debugging.Logger.Log($"{typeName}: cannot find integration settings, creating default settings");
                             instance = CreateInstance<TComponent>();
-                            instance.name = $"{typeName} Settings";
                             SingletonScriptableObjectFunctions.CreateAsset(typeName, instance);
                         }
                     }
