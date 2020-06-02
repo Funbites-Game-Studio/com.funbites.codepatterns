@@ -1,4 +1,20 @@
 ﻿namespace Funbites.Patterns {
+    public static class SingletonScriptableObjectFunctions
+    {
+
+        public static void CreateAsset(string typeName, UnityEngine.ScriptableObject instance)
+        {
+#if UNITY_EDITOR
+            if (!System.IO.Directory.Exists("Assets/Resources"))
+            {
+                UnityEditor.AssetDatabase.CreateFolder("Assets", "Resources");
+            }
+            UnityEditor.AssetDatabase.CreateAsset(instance, "Assets/Resources/" + typeName + ".asset");
+#else
+            throw new System.Exception("Can't create in runtime");
+#endif
+        }
+    }
     public abstract class SingletonScriptableObject<TComponent> : UnityEngine.ScriptableObject
         where TComponent : UnityEngine.ScriptableObject
     {
@@ -7,6 +23,9 @@
         static bool hasInstance;
         static int instanceId;
         static readonly object lockObject = new object();
+
+
+
 
         public static TComponent Instance
         {
@@ -20,18 +39,12 @@
                     if (instance == null) {
                         string typeName = typeof(TComponent).Name;
                         instance = UnityEngine.Resources.Load(typeName) as TComponent;
-                        if (instance == null) {
+                        if (instance != null) {
                             
-                            Funbites.Debugging.Logger.Log($"{typeName}: cannot find integration settings, creating default settings");
-                            instance = UnityEngine.ScriptableObject.CreateInstance<TComponent>();
+                            Debugging.Logger.Log($"{typeName}: cannot find integration settings, creating default settings");
+                            instance = CreateInstance<TComponent>();
                             instance.name = $"{typeName} Settings";
-
-#if UNITY_EDITOR
-                            if (!System.IO.Directory.Exists("Assets/Resources")) {
-                                UnityEditor.AssetDatabase.CreateFolder("Assets", "Resources");
-                            }
-                            UnityEditor.AssetDatabase.CreateAsset(instance, "Assets/Resources/" + typeName + ".asset");
-#endif
+                            SingletonScriptableObjectFunctions.CreateAsset(typeName, instance);
                         }
                     }
 

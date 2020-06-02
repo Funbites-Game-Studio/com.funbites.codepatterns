@@ -1,6 +1,5 @@
 ﻿namespace Funbites.Patterns
 {
-    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Event Handlers/Application")]
     public class ApplicationEventHandler : SingletonScriptableObject<ApplicationEventHandler>
     {
         [UnityEngine.SerializeField]

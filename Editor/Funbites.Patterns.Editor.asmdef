@@ -1,6 +1,9 @@
 {
     "name": "Funbites.Patterns.Editor",
-    "references": [],
+    "references": [
+        "GUID:c9d13eba02314b449913950f7f5e8fe8",
+        "GUID:4d759bcd0539fef428b1383a13f0aca4"
+    ],
     "includePlatforms": [
         "Editor"
     ],

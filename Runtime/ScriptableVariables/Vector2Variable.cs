@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace Funbites.Patterns.ScriptableVariables
+﻿namespace Funbites.Patterns.ScriptableVariables
 {
     [UnityEngine.CreateAssetMenu(menuName = "Funbites/Scriptable Variables/Vector2")]
     public class Vector2Variable : BaseVariable<UnityEngine.Vector2>
@@ -29,3 +26,4 @@ namespace Funbites.Patterns.ScriptableVariables
         }
     }
 }
+

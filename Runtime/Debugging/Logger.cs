@@ -1,6 +1,5 @@
 ﻿namespace Funbites.Debugging
 {
-    [UnityEngine.CreateAssetMenu(menuName = "Funbites/Debugging/Logger")]
     public class Logger : Patterns.SingletonScriptableObject<Logger>
     {
         public static void Log(string message, UnityEngine.Object context = null) {
