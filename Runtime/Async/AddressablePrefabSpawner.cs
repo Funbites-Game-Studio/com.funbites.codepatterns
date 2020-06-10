@@ -20,7 +20,7 @@
                 timingOperation.Run();
             } else
             {
-                throw new AsyncTimingOperationException(timingOperation, "You can't call Spawn when a timing operation has already started.");
+                throw new AsyncTimingException(timingOperation, "You can't call Spawn when a timing operation has already started.");
             }
         }
 

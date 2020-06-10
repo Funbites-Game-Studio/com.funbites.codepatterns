@@ -37,10 +37,10 @@
                 if (currentController == Controller) {
                     isTaken = false;
                 } else {
-                    ThrowException(currentController, new Exception("Controller for instance of " + GetType().FullName + " is trying to release from but it's not equal the current controller."));
+                    ThrowException(currentController, new Exception($"Controller for instance of { GetType().FullName } is trying to release from but it's not equal the current controller."));
                 }
             } else {
-                ThrowException(currentController, new Exception("Controller for instance of " + GetType().FullName + " is trying to release but it's not taken by any controller."));
+                ThrowException(currentController, new Exception($"Controller for instance of { GetType().FullName } is trying to release but it's not taken by any controller."));
             }
         }
 
