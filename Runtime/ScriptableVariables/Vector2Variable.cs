@@ -1,6 +1,7 @@
 ﻿namespace Funbites.Patterns.ScriptableVariables
 {
     [UnityEngine.CreateAssetMenu(menuName = "Funbites/Scriptable Variables/Vector2")]
+    [System.Serializable]
     public class Vector2Variable : BaseVariable<UnityEngine.Vector2>
     {
         public float X {
