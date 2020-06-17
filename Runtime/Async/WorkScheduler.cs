@@ -1,6 +1,6 @@
 ﻿namespace Funbites.Patterns.Asynchronous {
     [UnityEngine.AddComponentMenu(""), UnityEngine.DefaultExecutionOrder(-5000)]
-    public class WorkScheduler : SingletonMonoBehavior<WorkScheduler> {
+    public class WorkScheduler : SingletonMonoBehaviour<WorkScheduler> {
 
         public float MaxWorkTime = 0.08f;
         public float MaxFrameTime = 0.1f;
@@ -8,11 +8,6 @@
         private bool alreadyDidMaxWorkThisFrame;
         private float frameStartReferenceTime;
         private float workStartreferenceTime;
-
-        protected void Awake() {
-            didWorkThisFrame = false;
-            alreadyDidMaxWorkThisFrame = false;
-        }
 
         private void Update() {
             frameStartReferenceTime = UnityEngine.Time.realtimeSinceStartup;
@@ -40,6 +35,12 @@
         }
 
         private void LateUpdate() {
+            didWorkThisFrame = false;
+            alreadyDidMaxWorkThisFrame = false;
+        }
+
+        protected override void OnCreateInstance()
+        {
             didWorkThisFrame = false;
             alreadyDidMaxWorkThisFrame = false;
         }

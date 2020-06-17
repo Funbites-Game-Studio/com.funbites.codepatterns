@@ -1,6 +1,5 @@
 ﻿namespace Funbites.Patterns {
-    public abstract class SingletonMonoBehavior<TComponent> : UnityEngine.MonoBehaviour
-        where TComponent : UnityEngine.MonoBehaviour
+    public abstract class SingletonMonoBehaviour<TComponent> : UnityEngine.MonoBehaviour where TComponent : SingletonMonoBehaviour<TComponent>
     {
         static TComponent instance;
         static bool hasInstance;
@@ -9,10 +8,8 @@
         static readonly object lockObject = new object();
 
 
-        public static TComponent Instance
-        {
-            get
-            {
+        public static TComponent Instance {
+            get {
                 lock (lockObject) {
                     if (shuttingDown) {
                         Debugging.Logger.LogWarning("[Singleton] Instance '" + typeof(TComponent) +
@@ -23,12 +20,17 @@
                         return instance;
                     }
 
-                    if (instance == null) {
+                    instance = FindFirstInstance();
+                    
+                    if (instance == null)
+                    {
                         // Need to create a new GameObject to attach the singleton to.
                         var singletonObject = new UnityEngine.GameObject();
                         instance = singletonObject.AddComponent<TComponent>();
+
                         // Make instance persistent.
                         DontDestroyOnLoad(singletonObject);
+                        instance.OnCreateInstance();
                     }
 
                     hasInstance = true;
@@ -37,6 +39,22 @@
                 }
             }
         }
+
+        static TComponent[] FindInstances()
+        {
+            var objects = FindObjectsOfType<TComponent>();
+            System.Array.Sort(objects, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
+            return objects;
+        }
+
+
+        static TComponent FindFirstInstance()
+        {
+            var objects = FindInstances();
+            return objects.Length > 0 ? objects[0] : null;
+        }
+
+        protected abstract void OnCreateInstance();
 
 
         /// <summary>
@@ -59,7 +77,7 @@
             }
         }
 
-
+        /*
         /// <summary>
         /// Returns true if the object is the singleton instance.
         /// </summary>
@@ -85,25 +103,21 @@
             get
             {
                 lock (lockObject) {
-                    // We compare against the last known instance ID because Unity destroys objects
-                    // in random order and this may get called during teardown when the instance is
-                    // already gone.
                     return GetInstanceID() != instanceId;
                 }
             }
         }
+        */
 
-
-        // ReSharper disable once VirtualMemberNeverOverridden.Global
         protected virtual void Start() {
             gameObject.name = typeof(TComponent).ToString() + " (Singleton)";
             if (UnityEngine.Application.isPlaying) {
                 if (GetInstanceID() != instanceId) {
 #if UNITY_EDITOR
-                    Debugging.Logger.LogWarning("A redundant instance (" + name + ") of singleton " + typeof(TComponent) + " is present in the scene.", this);
+                    Debugging.Logger.LogWarning($"A redundant instance ({name}) of singleton { typeof(TComponent) } is present in the scene.", this);
                     UnityEditor.EditorGUIUtility.PingObject(this);
 #endif
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }
             
