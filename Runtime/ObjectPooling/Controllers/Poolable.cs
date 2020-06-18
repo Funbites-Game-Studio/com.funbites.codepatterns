@@ -50,6 +50,7 @@
             if (!hasPool)
             {
                 if (!m_dontUsePool)
+                    //TODO: maybe a info would be better than a warning because user optin to do not use pool, so it's the expected behaviour
                     Debugging.Logger.LogWarning($"Poolable game object does not have a pool, calling TakeFromPool: {name}", gameObject);
                 TakeFromPool();
             }
