@@ -1,6 +1,8 @@
 ﻿namespace Funbites.Patterns {
+    using UnityEngine;
     using UnityEngine.SceneManagement;
-    public class SceneLoader : SingletonScriptableObject<SceneLoader> {
+    [CreateAssetMenu(menuName = "Funbites/Scene Management/Scene Loader")]
+    public class SceneLoader : ScriptableObject { //SingletonScriptableObject<SceneLoader> {
 
         public void LoadScene(string sceneName) {
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

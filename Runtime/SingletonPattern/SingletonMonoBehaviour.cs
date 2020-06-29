@@ -118,6 +118,9 @@
                     UnityEditor.EditorGUIUtility.PingObject(this);
 #endif
                     gameObject.SetActive(false);
+                } else
+                {
+                    OnCreateInstance();
                 }
             }
             
