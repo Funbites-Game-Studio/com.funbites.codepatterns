@@ -1,4 +1,7 @@
-﻿namespace Funbites.Patterns.ObjectPooling {
+﻿using MEC;
+using Sirenix.OdinInspector;
+
+namespace Funbites.Patterns.ObjectPooling {
     public enum ScenePoolState
     {
         NotInitialized,
@@ -33,16 +36,37 @@
 
         [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         public ScenePoolState State { get; private set; } = ScenePoolState.NotInitialized;
-
+        [ShowInInspector, ReadOnly]
         protected System.Collections.Generic.List<Pool> allScenePools = new System.Collections.Generic.List<Pool>();
-#if UNITY_EDITOR
 
-        public Pool[] GetPools()
+        public bool AddPool(Pool pool, out CoroutineHandle loading)
+        {
+            if (allScenePools.Contains(pool))
+            {
+                loading = default(CoroutineHandle);
+                return false;
+            }
+            allScenePools.Add(pool);
+            loading = Timing.RunCoroutine(pool.InitializePool(this));
+            return true;
+        }
+
+        public bool RemovePool(Pool pool)
+        {
+            if (!allScenePools.Contains(pool))
+            {
+                return false;
+            }
+            allScenePools.Remove(pool);
+            pool.ReturnAllObjectsToPool(true);
+            pool.DestroyObjectsInPool();
+            return true;
+        }
+
+        public Pool[] CopyPoolListCurrentState()
         {
             return allScenePools.ToArray();
         }
-
-#endif
 
 
         private void Awake()
@@ -85,12 +109,12 @@
             }
         }
 
-        public Patterns.Asynchronous.AsyncTimingOperation FinalizePool(bool destroySelf, bool isDestroying = false)
+        public Asynchronous.AsyncTimingOperation FinalizePool(bool destroySelf, bool isDestroying = false)
         {
             if (State != ScenePoolState.Initialized)
-                return new Patterns.Asynchronous.AsyncTimingOperation();
+                return new Asynchronous.AsyncTimingOperation();
             State = ScenePoolState.Finalizing;
-            var result = new Patterns.Asynchronous.AsyncTimingOperation(FinalizePoolCoroutine(destroySelf, isDestroying));
+            var result = new Asynchronous.AsyncTimingOperation(FinalizePoolCoroutine(destroySelf, isDestroying));
             result.Run();
             return result;
         }
@@ -101,7 +125,7 @@
             {
                 pool.ReturnAllObjectsToPool(isDestroying);
                 pool.FinalizePool(this);
-                yield return 0;
+                yield return Timing.WaitForOneFrame;
             }
 
             if (destroySelf)

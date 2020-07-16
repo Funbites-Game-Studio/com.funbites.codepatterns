@@ -4,6 +4,7 @@
     using ReadOnly = Sirenix.OdinInspector.ReadOnlyAttribute;
     using ShowInInspector = Sirenix.OdinInspector.ShowInInspectorAttribute;
     using SerializeField = UnityEngine.SerializeField;
+    using System;
 
     public enum PoolState
     {
@@ -28,6 +29,16 @@
 
         [SerializeField, Required, AssetsOnly]
         private Poolable m_prefab = null;
+
+        public void DestroyObjectsInPool()
+        {
+            foreach (var poolObj in pooledObjects)
+            {
+                Destroy(poolObj.gameObject);
+            }
+            currentSize -= pooledObjects.Count;
+            pooledObjects.Clear();
+        }
 
         private bool m_useWorkSchedulerToInstantiate = false;
 
@@ -191,6 +202,15 @@
         public UnityEngine.GameObject GetInstance()
         {
             return GetNewInstance().TakeFromPool();
+        }
+
+        public void ShrinkPoolToInitialSize()
+        {
+            while (pooledObjects.Count > m_initialPoolSize)
+            {
+                var poolable = pooledObjects.Dequeue();
+                Destroy(poolable.gameObject);
+            }
         }
 
         internal void ReturnToPool(Poolable poolObject, bool isDestroying)
