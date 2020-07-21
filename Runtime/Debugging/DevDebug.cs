@@ -1,5 +1,6 @@
 ﻿namespace Funbites.Debugging
 {
+    using System;
     using System.Diagnostics;
 
     public class DevDebug : Patterns.SingletonScriptableObject<DevDebug> {
@@ -42,13 +43,31 @@
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log(string message, UnityEngine.Object context) {
             if (IsActive(context.GetType()))
-                UnityEngine.Debug.Log(message, (context is UnityEngine.MonoBehaviour) ? 
-                    (context as UnityEngine.MonoBehaviour).gameObject: context);
+                UnityEngine.Debug.Log(message, TryToGetGameObjectReference(context));
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
         public static void Log(System.Func<string> message, UnityEngine.Object context) {
             Log(message.Invoke(), context);            
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public static void LogWarning(string message, UnityEngine.Object context) 
+        {
+            if (IsActive(context.GetType()))
+                UnityEngine.Debug.LogWarning(message, TryToGetGameObjectReference(context));
+        }
+
+        [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+        public static void LogWarning(string message)
+        {
+            UnityEngine.Debug.LogWarning(message);
+        }
+
+        private static UnityEngine.Object TryToGetGameObjectReference(UnityEngine.Object context)
+        {
+            return (context is UnityEngine.MonoBehaviour) ?
+                    (context as UnityEngine.MonoBehaviour).gameObject : context;
         }
     }
 }

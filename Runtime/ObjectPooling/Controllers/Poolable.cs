@@ -10,7 +10,9 @@
         private bool m_returnToPoolOnParticleStop = false;
 
         [SerializeField, Sirenix.OdinInspector.ToggleLeft]
-        [Sirenix.OdinInspector.InfoBox("Use this only you want your object to respond to the pool callbacks, but dont actually use a pool.", "m_dontUsePool", InfoMessageType = Sirenix.OdinInspector.InfoMessageType.Warning)]
+        [Sirenix.OdinInspector.InfoBox("Use this only you want your object to respond to the pool callbacks, but dont actually use a pool. " +
+            "This is useful if you have a poolable prefab, but you want to put it directly to the scene or other prefab without using the pool", "m_dontUsePool", 
+            InfoMessageType = Sirenix.OdinInspector.InfoMessageType.Warning)]
         private bool m_dontUsePool = false;
 
         [SerializeField]
