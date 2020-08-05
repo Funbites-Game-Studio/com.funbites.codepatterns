@@ -6,13 +6,13 @@
 
         private System.Func<AsyncTimingRequest<T>, System.Collections.Generic.IEnumerator<float>> coroutine;
 
-        public System.Action OnCompleted;
+        public System.Action<T> OnCompleted;
 
         public T Result { get; set; }
 
         public override bool keepWaiting => CurrentState == AsyncTimingOperationLoadingState.Running;
 
-        public AsyncTimingRequest()
+        internal AsyncTimingRequest()
         {
             CurrentState = AsyncTimingOperationLoadingState.Failed;
         }
@@ -36,7 +36,7 @@
         {
             yield return MEC.Timing.WaitUntilDone(MEC.Timing.RunCoroutine(coroutine(this)));
             CurrentState = AsyncTimingOperationLoadingState.Completed;
-            OnCompleted?.Invoke();
+            OnCompleted?.Invoke(Result);
         }
     }
 }
