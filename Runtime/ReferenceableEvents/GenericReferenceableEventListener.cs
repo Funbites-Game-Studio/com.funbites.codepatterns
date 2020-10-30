@@ -9,7 +9,7 @@
         [UnityEngine.SerializeField, Sirenix.OdinInspector.ToggleLeft]
         private bool m_raiseForSpecificArgument = false;
 
-        [UnityEngine.SerializeField, Sirenix.OdinInspector.ShowIf("m_raiseForSpecificArgument")]
+        [UnityEngine.SerializeField, Sirenix.OdinInspector.ShowIf(nameof(m_raiseForSpecificArgument))]
         private ARGUMENT_TYPE m_specificArgument = default;
 
         public ARGUMENT_EVENT Response;
