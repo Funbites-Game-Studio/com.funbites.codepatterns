@@ -47,25 +47,31 @@
             IsLoading = true;
             bool success = true;
             FilePath = $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{m_localCacheRelativePath}";
-            if (File.Exists(FilePath)) {
-                Debug.Log($"Loading from local file: {FilePath}");
-                //Data = File.ReadAllText(filePath);
-            } else {
+            if (!File.Exists(FilePath)) {
                 Debug.Log($"Loading from web: {m_url}");
                 UnityWebRequest www = UnityWebRequest.Get(m_url);
                 yield return Timing.WaitUntilDone(www.SendWebRequest());
-                if (www.isNetworkError || www.isHttpError) {
-                    Debug.Log(www.error);
-                    success = false;
-                } else {
+                if (www.result == UnityWebRequest.Result.Success) {
                     string Data;
-                    if (processRemoteData != null) {
+                    if (processRemoteData != null)
+                    {
                         Data = processRemoteData(www.downloadHandler.text);
-                    } else {
+                    }
+                    else
+                    {
                         Data = www.downloadHandler.text;
                     }
-                    Debug.Log($"Saving to local file: {FilePath}");
+                    //Debug.Log($"Saving to local file: {FilePath}");
                     File.WriteAllText(FilePath, Data);
+                } else {
+                    //Debug.Log(www.error);
+                    success = false;
+                }
+                if (!success)
+                {
+                    string errorMessage = www.error;
+                    www.Dispose();
+                    throw new Exception(errorMessage);
                 }
                 www.Dispose();
             }
