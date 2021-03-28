@@ -51,7 +51,14 @@
                 Debug.Log($"Loading from web: {m_url}");
                 UnityWebRequest www = UnityWebRequest.Get(m_url);
                 yield return Timing.WaitUntilDone(www.SendWebRequest());
-                if (www.result == UnityWebRequest.Result.Success) {
+#if UNITY_2020_1_OR_NEWER
+                if (www.result != UnityWebRequest.Result.Success) {
+#else
+                if (www.isNetworkError || www.isHttpError) {
+#endif
+                    //Debug.Log(www.error);
+                    success = false;
+                } else {
                     string Data;
                     if (processRemoteData != null)
                     {
