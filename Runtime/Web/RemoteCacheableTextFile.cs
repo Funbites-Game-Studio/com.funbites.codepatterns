@@ -70,9 +70,6 @@
                     }
                     //Debug.Log($"Saving to local file: {FilePath}");
                     File.WriteAllText(FilePath, Data);
-                } else {
-                    //Debug.Log(www.error);
-                    success = false;
                 }
                 if (!success)
                 {
