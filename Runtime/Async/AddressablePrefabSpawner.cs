@@ -1,4 +1,7 @@
 ﻿namespace Funbites.Patterns.Asynchronous {
+
+    using System.Threading.Tasks;
+
     public class AddressablePrefabSpawner : UnityEngine.MonoBehaviour
     {
         [UnityEngine.SerializeField]
@@ -7,30 +10,35 @@
         [UnityEngine.SerializeField, Sirenix.OdinInspector.Required]
         private UnityEngine.AddressableAssets.AssetReferenceGameObject m_prefab = null;
 
-        private AsyncTimingOperation timingOperation;
+        private Task<UnityEngine.GameObject> task;
 
-        private void Start() {
-            if (m_spawnOnStart) Spawn();
-        }
-
-        public void Spawn() {
-            if (timingOperation == null)
+        private async void Start() {
+            if (!m_spawnOnStart) 
             {
-                timingOperation = new AsyncTimingOperation(SpawnCoroutine());
-                timingOperation.Run();
-            } else
-            {
-                throw new AsyncTimingException(timingOperation, "You can't call Spawn when a timing operation has already started.");
+                return;
             }
+            await SpawnTask();
         }
 
-        private System.Collections.Generic.IEnumerator<float> SpawnCoroutine() {
-            var handle = m_prefab.InstantiateAsync();
-            while (!handle.IsDone) yield return MEC.Timing.WaitForOneFrame;
-            var newGameObject = handle.Result;
-            newGameObject.transform.SetParent(transform.parent);
-            newGameObject.name = name;
-            Destroy(gameObject);
+        public async void Spawn() {
+            await SpawnTask();
+        }
+
+        private async Task SpawnTask()
+        {
+            if (task == null)
+            {
+                var handle = m_prefab.InstantiateAsync();
+                task = handle.Task;
+                var newGameObject = await task;
+                newGameObject.transform.SetParent(transform.parent);
+                newGameObject.name = name;
+                Destroy(gameObject);
+            }
+            else
+            {
+                throw new System.InvalidOperationException("You can't call Spawn more than once.");
+            }
         }
     }
 }

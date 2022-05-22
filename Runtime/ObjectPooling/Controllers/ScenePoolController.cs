@@ -1,5 +1,4 @@
 ﻿using MEC;
-using Sirenix.OdinInspector;
 
 namespace Funbites.Patterns.ObjectPooling {
     public enum ScenePoolState
@@ -36,7 +35,7 @@ namespace Funbites.Patterns.ObjectPooling {
 
         [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         public ScenePoolState State { get; private set; } = ScenePoolState.NotInitialized;
-        [ShowInInspector, ReadOnly]
+        [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         protected System.Collections.Generic.List<Pool> allScenePools = new System.Collections.Generic.List<Pool>();
 
         public bool AddPool(Pool pool, out CoroutineHandle loading)
