@@ -31,7 +31,7 @@
         public void Load(Action<bool> onComplete, Func<string, string> processRemoteData) {
             
             if (IsLoading) {
-                throw new Exception("Already Loading");
+                throw new InvalidOperationException("Already Loading");
             } else {
                 IsLoading = true;
                 loadingCoroutine = Timing.RunCoroutine(LoadCoroutine(onComplete, processRemoteData));
@@ -39,7 +39,7 @@
         }
 
         public string ReadData() {
-            if (string.IsNullOrEmpty(FilePath) || IsLoading || !File.Exists(FilePath)) throw new Exception("You must load the file first");
+            if (string.IsNullOrEmpty(FilePath) || IsLoading || !File.Exists(FilePath)) throw new InvalidOperationException("You must load the file first");
             return File.ReadAllText(FilePath);
         }
 
